@@ -56,8 +56,8 @@
 		pkg.status = urlParams.get("status");
 
 		//example
-		//http://frontend-ocr-test.localhost/?name=John%20Doe&address=123%20Main%20St&postalCode=12345&city=New%20York&orderedOn=2021-01-01&weight=10&height=10&long=10&lat=10&status=Delivered
-		//let uri = `http://frontend-ocr-test.localhost/?name=${pkg.name}&address=${pkg.address}&postalCode=${pkg.postalCode}&city=${pkg.city}&orderedOn=${pkg.orderedOn}&weight=${pkg.weight}&height=${pkg.height}&long=${pkg.long}&lat=${pkg.lat}&status=${pkg.status}`;
+		//http://frontend-ocr-test.tobybostoen.be/?name=John%20Doe&address=123%20Main%20St&postalCode=12345&city=New%20York&orderedOn=2021-01-01&weight=10&height=10&long=10&lat=10&status=Delivered
+		//let uri = `http://frontend-ocr-test.tobybostoen.be/?name=${pkg.name}&address=${pkg.address}&postalCode=${pkg.postalCode}&city=${pkg.city}&orderedOn=${pkg.orderedOn}&weight=${pkg.weight}&height=${pkg.height}&long=${pkg.long}&lat=${pkg.lat}&status=${pkg.status}`;
 	});
 </script>
 
