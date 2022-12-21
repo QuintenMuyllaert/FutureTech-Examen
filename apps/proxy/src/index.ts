@@ -12,8 +12,9 @@ app.use(cors());
 const origins = {
 	"backend-ocr": "http://localhost:3003",
 	"frontend-customer": "http://localhost:3001",
-	"frontend-driver": "http://localhost:3002",
+	"frontend-driver": "http://localhost:3000",
 	"frontend-ocr-test": "http://localhost:3004",
+	"backend-driver": "http://localhost:3002"
 };
 
 app.use(

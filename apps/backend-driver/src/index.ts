@@ -11,10 +11,6 @@ app.use(json());
 
 const prisma = new PrismaClient();
 
-app.get("/", (req, res) => {
-	res.send("Hello World!");
-});
-
 interface Package {
 	name: string;
 	address: string;
