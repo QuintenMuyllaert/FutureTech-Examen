@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from "svelte";
+	import Package from "./package.svelte";
 	let htmlCanvas: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D;
 
@@ -7,10 +8,26 @@
 
 	onMount(() => {
 		ctx = htmlCanvas.getContext("2d");
+		ctx.strokeStyle = "#000000";
+		ctx.lineWidth = 1;
 
 		//allow user to sign their signature on the canvas
-		const draw = (e: MouseEvent) => {
-			ctx.lineTo(e.offsetX, e.offsetY);
+		const draw = (e: MouseEvent | TouchEvent) => {
+			let x = 0;
+			let y = 0;
+			if (e instanceof TouchEvent) {
+				console.log("touch");
+				x = e.touches[0].clientX - htmlCanvas.offsetLeft;
+				y = e.touches[0].clientY - htmlCanvas.offsetTop;
+			}
+			if (e instanceof MouseEvent) {
+				console.log("mouse");
+				x = e.offsetX;
+				y = e.offsetY;
+			}
+			ctx.lineTo(x, y);
+			// black
+			ctx.strokeStyle = "#000000";
 			ctx.stroke();
 		};
 
@@ -22,6 +39,17 @@
 
 		htmlCanvas.addEventListener("mouseup", () => {
 			htmlCanvas.removeEventListener("mousemove", draw);
+		});
+
+		//mobile
+		htmlCanvas.addEventListener("touchstart", (e) => {
+			ctx.beginPath();
+			ctx.moveTo(e.touches[0].clientX - htmlCanvas.offsetLeft, e.touches[0].clientY - htmlCanvas.offsetTop);
+			htmlCanvas.addEventListener("touchmove", draw);
+		});
+
+		htmlCanvas.addEventListener("touchend", () => {
+			htmlCanvas.removeEventListener("touchmove", draw);
 		});
 	});
 
@@ -68,6 +96,8 @@
 		<img src="/kpostlogo.png" alt="logo" />
 	</nav>
 	<div class="container">
+		<Package />
+
 		<div class="gap">
 			<div>
 				<label for="naam">Fullname</label>
