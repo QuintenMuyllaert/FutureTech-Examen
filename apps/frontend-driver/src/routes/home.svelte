@@ -10,6 +10,14 @@
 		return await res.json();
 	};
 
+	const mobile = () => {
+		if (window.innerWidth < 768) {
+			return true;
+		} else {
+			return false;
+		}
+	};
+
 	onMount(async () => {
 		await getPackages().then((data) => {
 			console.log(data);
@@ -20,31 +28,48 @@
 
 <div class="shadow rounded-md p-8 bg-white min-w-[90vw] min-h-[80vh] max-w-6xl">
 	<h1 class="font-bold text-2xl">Home</h1>
-	<div class="grid max-h-[65vh] overflow-y-auto">
-		<div class="grid grid-cols-8 sticky top-0 z-10 py-2 bg-white">
-			<h2 class="font-bold">id</h2>
+	<div class="mobile grid max-h-[65vh] overflow-y-auto">
+		<div class="grid cols sticky top-0 z-10 py-2 bg-white">
+			{#if !mobile()}
+				<h2 class="font-bold">id</h2>
+			{/if}
 			<h2 class="font-bold">name</h2>
 			<h2 class="font-bold">address</h2>
 			<h2 class="font-bold">postalCode</h2>
 			<h2 class="font-bold">city</h2>
-			<h2 class="font-bold">orderedOn</h2>
-			<h2 class="font-bold">weight</h2>
-			<h2 class="font-bold">height</h2>
+			{#if !mobile()}
+				<h2 class="font-bold">orderedOn</h2>
+				<h2 class="font-bold">weight</h2>
+				<h2 class="font-bold">height</h2>
+			{/if}
 		</div>
 
 		{#if $packages != null || $packages != undefined}
 			{#each $packages as p}
-				<Link to="/tracking/{p.id}" class="grid grid-cols-8">
-					<div class="overflow-y-auto py-2 border-t-2">{p.id}</div>
-					<div class="overflow-y-auto py-2 border-t-2">{p.name}</div>
-					<div class="overflow-y-auto py-2 border-t-2">{p.address}</div>
-					<div class="overflow-y-auto py-2 border-t-2">{p.postalCode}</div>
-					<div class="overflow-x-auto py-2 border-t-2">{p.city}</div>
-					<div class="overflow-x-auto py-2 border-t-2">{p.orderedOn}</div>
-					<div class="overflow-x-auto py-2 border-t-2">{p.weight}</div>
-					<div class="overflow-x-auto py-2 border-t-2">{p.height}</div>
+				<Link to="/tracking/{p.id}" class="grid ">
+					<div class="grid cols sticky top-0 z-10 py-2 bg-white">
+						{#if !mobile()}
+							<div class="overflow-y-auto py-2 border-t-2">{p.id}</div>
+						{/if}
+						<div class="overflow-y-auto py-2 border-t-2">{p.name}</div>
+						<div class="overflow-y-auto py-2 border-t-2">{p.address}</div>
+						<div class="overflow-y-auto py-2 border-t-2">{p.postalCode}</div>
+						<div class="overflow-x-auto py-2 border-t-2">{p.city}</div>
+						{#if !mobile()}
+							<div class="overflow-x-auto py-2 border-t-2">{p.orderedOn}</div>
+							<div class="overflow-x-auto py-2 border-t-2">{p.weight}</div>
+							<div class="overflow-x-auto py-2 border-t-2">{p.height}</div>
+						{/if}
+					</div>
 				</Link>
 			{/each}
 		{/if}
 	</div>
 </div>
+
+<style>
+	.cols {
+		display: grid;
+		grid-template-columns: repeat(8, auto);
+	}
+</style>
