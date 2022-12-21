@@ -17,8 +17,12 @@ model Package {
   postalCode String
   city    String
   orderedOn DateTime
+  deliverDate DateTime
   weight Int
+  width Int
+  depth Int
   height  Int
   long Float
   lat Float
+  status String @default("Validatie")
 }
