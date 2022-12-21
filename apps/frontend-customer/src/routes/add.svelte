@@ -46,11 +46,11 @@
 
 		<div class="flex gap-4">
 			<div class="flex flex-col">
-				<label for="height" class="font-bold">hoogte</label>
+				<label for="height" class="font-bold">Hoogte</label>
 				<input type="number" id="height" class="border py-1 px-2 rounded" bind:value={pkg.height} />
 			</div>
 			<div class="flex flex-col">
-				<label for="weight" class="font-bold">gewicht</label>
+				<label for="weight" class="font-bold">Gewicht</label>
 				<input type="number" id="weight" class="border py-1 px-2 rounded" bind:value={pkg.weight} />
 			</div>
 		</div>
