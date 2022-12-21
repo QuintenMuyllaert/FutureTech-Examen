@@ -1,5 +1,19 @@
 <script lang="ts">
 	import { Map, Marker } from "@beyonk/svelte-mapbox";
+	import io from "socket.io-client";
+	import { onMount } from "svelte";
+
+	export let id
+
+	const socket = io("ws://backend-driver.tobybostoen.be");
+
+	const getPackage = async () => {
+		const res = await fetch(`http://backend-driver.tobybostoen.be/package/${id}`);
+		return await res.json();
+	};
+
+	let packageCurrent;
+
 	let mapComponent: Map;
 
 	const Kortrijk = {
@@ -7,35 +21,28 @@
 		lng: 3.26487,
 	};
 
-	let currentStep = 1;
+	let currentStep;
 	let stepName = "Ontvangen";
 	let deliveryDate = new Date();
 	let estimetedDeliveryTime = "12:00 - 14:00";
-
-	const changeStep = (step: number) => {
-		currentStep = step;
-
-		switch (step) {
-			case 1:
-				stepName = "Ontvangen";
-				break;
-			case 2:
-				stepName = "Verwerken";
-				break;
-			case 3:
-				stepName = "Verzonden";
-				break;
-			case 4:
-				stepName = "Geleverd";
-				break;
-		}
-	};
 
 	const onMapReady = (m) => {
 		console.log(m);
 		// console.log(Kortrijk.lat, Kortrijk.lng);
 		mapComponent.flyTo({ center: [Kortrijk.lng, Kortrijk.lat] });
 	};
+	socket.on("statusUpdate", (msg) => {
+		currentStep = msg.status;
+		packageCurrent = msg;
+		console.log(packageCurrent);
+	});
+
+	onMount(async () => {
+		const res = await getPackage();
+		packageCurrent = res;
+		currentStep = res.status
+		console.log(packageCurrent)
+	});
 </script>
 
 <div>
@@ -44,13 +51,13 @@
 		<nav>
 			<ul class="flex gap-4">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="bg-red-500 rounded-full w-24 h-4" on:click={() => changeStep(1)} />
+				<li class="bg-red-500 rounded-full w-24 h-4" />
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="{currentStep >= 2 ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" on:click={() => changeStep(2)} />
+				<li class="{currentStep == "Sortering" || currentStep == "Geleverd" || currentStep == "Verzonden" ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" />
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="{currentStep >= 3 ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" on:click={() => changeStep(3)} />
+				<li class="{currentStep == "Verzonden" || currentStep == "Geleverd" ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" />
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="{currentStep >= 4 ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" on:click={() => changeStep(4)} />
+				<li class="{currentStep == "Geleverd" ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" />
 			</ul>
 		</nav>
 		<div class="w-full">
@@ -58,7 +65,9 @@
 			<div class="flex gap-8">
 				<div>
 					<h3 class="font-bold">Verwachte leveringsdatum</h3>
-					<p>{deliveryDate.getDay()}/{deliveryDate.getMonth()}/{deliveryDate.getFullYear()}</p>
+					{#if packageCurrent}
+						<p>{packageCurrent.deliveryDate}</p>
+					{/if}
 				</div>
 				<div>
 					<h3 class="font-bold">Geschatte leveringstijd</h3>
@@ -66,13 +75,13 @@
 				</div>
 			</div>
 			<div class="w-[28rem] max-w-lg mt-4 h-48 overflow-y-auto">
-				{#if currentStep === 1}
+				{#if currentStep === "Validatie"}
 					<p>Je pakje is bij ons aangemeld en zal zo snel mogelijk verwerkt worden wanneer we deze ontvangen!</p>
 				{/if}
-				{#if currentStep === 2}
+				{#if currentStep === "Sortering"}
 					<p>We hebben je pakje in ons magazijn ontvangen! We zullen je pakje zo snel mogelijk verwerken en leveren!</p>
 				{/if}
-				{#if currentStep === 3}
+				{#if currentStep === "Verzonden"}
 					<Map
 						accessToken="pk.eyJ1IjoiYWVyZXR5IiwiYSI6ImNsOHZweTF2eDBnaHUzd29ndHExZHJzOXcifQ.IuExbN0AdEz1VCEDUVDn1w"
 						bind:this={mapComponent}
@@ -81,7 +90,7 @@
 						<Marker lat={Kortrijk.lat} lng={3} color="rgb(18, 40, 224)" label="Deliverer" popupClassName="class-name" />
 					</Map>
 				{/if}
-				{#if currentStep === 4}
+				{#if currentStep === "Geleverd"}
 					<p>Je pakje is geleverd!</p>
 				{/if}
 			</div>
