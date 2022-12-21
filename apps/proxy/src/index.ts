@@ -19,19 +19,21 @@ const origins = {
 
 app.use(
 	createProxyMiddleware({
-		target: "http://localhost",
+		target: "http://tobybostoen.be",
 		changeOrigin: true,
+		secure: false,
 		router: (req) => {
-			// request should be ORIGIN.localhost
+			// request should be ORIGIN.tobybostoen.be
+			console.log(req.headers.host);
 			const host = req.headers.host?.split(".")[0];
 			if (!host) {
-				return "http://localhost:404";
+				return "http://tobybostoen.be:404";
 			}
 
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			//@ts-ignore
 			if (!origins[host]) {
-				return "http://localhost:404";
+				return "http://tobybostoen.be:404";
 			}
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			//@ts-ignore
@@ -43,7 +45,7 @@ app.use(
 
 const doesSSLExist = async () => {
 	try {
-		await fs.readFile("./ssl/server.key");
+		await fs.readFile("./ssl/cert.pem");
 		return true;
 	} catch (error) {
 		return false;
@@ -55,8 +57,8 @@ const startServer = async () => {
 		console.log("SSL exists, starting https server");
 		const server = https.createServer(
 			{
-				key: await fs.readFile("./ssl/server.key"),
-				cert: await fs.readFile("./ssl/server.cert"),
+				key: await fs.readFile("./ssl/key.pem"),
+				cert: await fs.readFile("./ssl/cert.pem"),
 			},
 			app,
 		);
