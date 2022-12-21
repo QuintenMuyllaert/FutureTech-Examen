@@ -38,9 +38,6 @@ app.use(
 			return origins[host];
 		},
 		ws: true,
-		onProxyReqWs: (proxyReq, req, socket, options, head) => {
-			proxyReq.setHeader("origin", req.headers.origin);
-		},
 	}),
 );
 
