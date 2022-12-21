@@ -4,6 +4,7 @@
 	import Tracking from "./routes/tracking.svelte";
 
 	export let url = "";
+
 </script>
 
 <Router {url}>
