@@ -1,62 +1,92 @@
 <script lang="ts">
-	let currentStep = 1;
-	let stepName = "Validatie";
+	import io from "socket.io-client";
+	import { navigate } from "svelte-routing"
+	import { onMount } from "svelte";
+
+	export let id;
+	let currentPackage = null;
+	console.log(id);
+
+	const socket = io("ws://backend-driver.localhost");
+	let currentStep = "Validatie";
 	let deliveryDate = new Date();
 	let estimetedDeliveryTime = "12:00 - 14:00";
 
-	const changeStep = (step: number) => {
-		currentStep = step;
-
-		switch (step) {
-			case 1:
-				stepName = "Validatie";
-				break;
-			case 2:
-				stepName = "Sortering";
-				break;
-			case 3:
-				stepName = "Verzonden";
-				break;
-		}
+	const getPackage = async () => {
+		const res = await fetch(`http://backend-driver.localhost/package/${id}`);
+		return await res.json();
 	};
+
+	const change = (step: string) => {
+		socket.on("statusUpdate", (msg) => {
+			currentStep = msg.status;
+		});
+		socket.emit("statusChange", {
+			id: id,
+			status: step,
+		});
+	};
+	console.log(currentStep);
+	onMount(async () => {
+		if (id != null || id != undefined) {
+			const res = await getPackage();
+			console.log(res);
+			currentStep = res.status;
+			currentPackage = res;
+			console.log(currentPackage);
+		}
+	});
 </script>
 
-
-	<div class="shadow rounded-md p-8 grid grid-rows-[auto_auto_1fr] gap-4 bg-white min-h-[50vh]">
-		<h1 class="text-4xl text-red font-bold">K-post</h1>
-		<nav>
-			<ul class="flex gap-4">
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="bg-red-500 rounded-full w-24 h-4" on:click={() => changeStep(1)} />
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="{currentStep >= 2 ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" on:click={() => changeStep(2)} />
-				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="{currentStep >= 3 ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" on:click={() => changeStep(3)} />
-			</ul>
-		</nav>
-		<div class="w-full">
-			<h2 class="text-xl font-bold">{stepName}</h2>
-			<div class="flex gap-8">
-				<div>
-					<h3 class="font-bold">Verwachte leveringsdatum</h3>
-					<p>{deliveryDate.getDay()}/{deliveryDate.getMonth()}/{deliveryDate.getFullYear()}</p>
-				</div>
-				<div>
-					<h3 class="font-bold">Geschatte leveringstijd</h3>
-					<p>{estimetedDeliveryTime}</p>
-				</div>
+<div class="shadow rounded-md p-8 grid grid-rows-[auto_auto_1fr] gap-4 bg-white min-h-[50vh]">
+	<h1 class="text-4xl text-red font-bold">K-post</h1>
+	<nav>
+		<ul class="flex gap-4">
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li class="bg-red-500 rounded-full w-24 h-4" />
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li class="{currentStep == 'Sortering' || currentStep == 'Verzonden' ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" />
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<li class="{currentStep == 'Verzonden' ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" />
+		</ul>
+	</nav>
+	<div class="w-full">
+		<h2 class="text-xl font-bold">{currentStep}</h2>
+		<div class="flex gap-8">
+			<div>
+				<h3 class="font-bold">Verwachte leveringsdatum</h3>
+				{#if currentPackage != null}
+					<p>{currentPackage.deliverDate}</p>
+				{/if}
 			</div>
-			<div class="w-[28rem] max-w-lg mt-4 h-48 overflow-y-auto">
-				{#if currentStep === 1}
-					<p>Pakje is in validatie</p>
-				{/if}
-				{#if currentStep === 2}
-					<p>Pakje is in sortering</p>
-				{/if}
-				{#if currentStep === 3}
-					<p>Pakje is vertrokken voor levering</p>
-				{/if}
+			<div>
+				<h3 class="font-bold">Geschatte leveringstijd</h3>
+				<p>{estimetedDeliveryTime}</p>
 			</div>
 		</div>
+		<div class="w-[28rem] max-w-lg mt-4 h-48 overflow-y-auto">
+			{#if currentStep === "Validatie"}
+				<div class="mx-auto">
+					<p>Pakje is in validatie</p>
+					<button class="px-4 py-2 bg-red-600 text-white rounded-md"
+						on:click={() => {
+							change("Sortering");
+						}}>Validatie is klaar</button>
+				</div>
+			{/if}
+			{#if currentStep === "Sortering"}
+				<p>Pakje is in sortering</p>
+				<button class="px-4 py-2 bg-red-600 text-white rounded-md"
+					on:click={() => {
+						change("Verzonden");
+					}}>Sortering is klaar</button>
+			{/if}
+			{#if currentStep === "Verzonden"}
+				<p>Pakje is vertrokken voor levering</p>
+				<button class="px-4 py-2 bg-red-600 text-white rounded-md" on:click={() => {
+					navigate(`http://frontend-ocr-test.localhost/?name=${currentPackage.name}&address=${currentPackage.address}&postalCode=${currentPackage.postalCode}&city=${currentPackage.city}&orderedOn=${currentPackage.orderedOn}&weight=${currentPackage.weight}&height=${currentPackage.height}&long=${currentPackage.long}&lat=${currentPackage.lat}&status=${currentPackage.status}`)
+				}}>Geleverd</button>
+			{/if}
+		</div>
 	</div>
-
+</div>
