@@ -1,19 +1,19 @@
 <script lang="ts">
 	import io from "socket.io-client";
-	import { navigate } from "svelte-routing"
+	import { navigate } from "svelte-routing";
 	import { onMount } from "svelte";
 
 	export let id;
 	let currentPackage = null;
 	console.log(id);
 
-	const socket = io("ws://backend-driver.localhost");
+	const socket = io("ws://backend-driver.tobybostoen.be");
 	let currentStep = "Validatie";
 	let deliveryDate = new Date();
 	let estimetedDeliveryTime = "12:00 - 14:00";
 
 	const getPackage = async () => {
-		const res = await fetch(`http://backend-driver.localhost/package/${id}`);
+		const res = await fetch(`http://backend-driver.tobybostoen.be/package/${id}`);
 		return await res.json();
 	};
 
@@ -68,7 +68,8 @@
 			{#if currentStep === "Validatie"}
 				<div class="mx-auto">
 					<p>Pakje is in validatie</p>
-					<button class="px-4 py-2 bg-red-600 text-white rounded-md"
+					<button
+						class="px-4 py-2 bg-red-600 text-white rounded-md"
 						on:click={() => {
 							change("Sortering");
 						}}>Validatie is klaar</button>
@@ -76,16 +77,21 @@
 			{/if}
 			{#if currentStep === "Sortering"}
 				<p>Pakje is in sortering</p>
-				<button class="px-4 py-2 bg-red-600 text-white rounded-md"
+				<button
+					class="px-4 py-2 bg-red-600 text-white rounded-md"
 					on:click={() => {
 						change("Verzonden");
 					}}>Sortering is klaar</button>
 			{/if}
 			{#if currentStep === "Verzonden"}
 				<p>Pakje is vertrokken voor levering</p>
-				<button class="px-4 py-2 bg-red-600 text-white rounded-md" on:click={() => {
-					navigate(`http://frontend-ocr-test.localhost/?name=${currentPackage.name}&address=${currentPackage.address}&postalCode=${currentPackage.postalCode}&city=${currentPackage.city}&orderedOn=${currentPackage.orderedOn}&weight=${currentPackage.weight}&height=${currentPackage.height}&long=${currentPackage.long}&lat=${currentPackage.lat}&status=${currentPackage.status}`)
-				}}>Geleverd</button>
+				<button
+					class="px-4 py-2 bg-red-600 text-white rounded-md"
+					on:click={() => {
+						navigate(
+							`http://frontend-ocr-test.tobybostoen.be/?name=${currentPackage.name}&address=${currentPackage.address}&postalCode=${currentPackage.postalCode}&city=${currentPackage.city}&orderedOn=${currentPackage.orderedOn}&weight=${currentPackage.weight}&height=${currentPackage.height}&long=${currentPackage.long}&lat=${currentPackage.lat}&status=${currentPackage.status}`,
+						);
+					}}>Geleverd</button>
 			{/if}
 		</div>
 	</div>
