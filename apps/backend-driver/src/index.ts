@@ -119,13 +119,17 @@ app.post("/idcard", async (req, res) => {
 	const base64Data = image.replace(/^data:([A-Za-z-+/]+);base64,/, "");
 	await prisma.package.update({
 		where: {
-			id: id,
+			id: packageId,
 		},
 		data: {
 			// @ts-ignore
 			status: "Geleverd",
 		},
 	});
+	io.emit("statusUpdate", {
+		status: "Geleverd",
+		id: packageId,
+	})
 	await fs.writeFile(`./idcard/${id}-${packageId}-signed.jpg`, base64Data, "base64");
 	return res.send("ok");
 });
