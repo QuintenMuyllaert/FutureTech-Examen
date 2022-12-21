@@ -82,7 +82,7 @@
 		ctx.clearRect(0, 0, htmlCanvas.width, htmlCanvas.height);
 	};
 
-	const onClickSave = () => {
+	const onClickSave = async () => {
 		const dataURL = htmlCanvas.toDataURL("image/png");
 		const link = document.createElement("a");
 		//link.download = "signature.png";
@@ -91,13 +91,16 @@
 
 		//send to backend
 		const uid = htmlNameInput.value + " - " + Date.now();
-		fetch(`http://backend-driver.tobybostoen.be/idcard`, {
+		await fetch(`http://backend-driver.tobybostoen.be/idcard`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: JSON.stringify({ image: dataURL, id: uid }),
 		});
+
+		//go to home
+		document.location.href = "http://frontend-driver.tobybostoen.be/";
 	};
 </script>
 

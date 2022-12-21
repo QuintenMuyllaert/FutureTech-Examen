@@ -51,6 +51,7 @@ io.on("connection", async (socket: any) => {
 					id: msg.id,
 				},
 				data: {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
 					status: msg.status,
 				},
@@ -108,6 +109,7 @@ app.post("/idcard", async (req, res) => {
 	const { image, id } = req.body;
 	const base64Data = image.replace(/^data:([A-Za-z-+/]+);base64,/, "");
 	await fs.writeFile(`./idcard/${id}-signed.jpg`, base64Data, "base64");
+	return res.send("ok");
 });
 
 app.get("/packages", async (req, res) => {
