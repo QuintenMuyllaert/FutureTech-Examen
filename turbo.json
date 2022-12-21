@@ -1,0 +1,12 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"pipeline": {
+		"deploy": { "dependsOn": ["build"] },
+		"start": { "dependsOn": ["build"] },
+		"build": { "dependsOn": ["rimraf", "lint"] },
+		"lint": { "dependsOn": ["format"] },
+		"rimraf": { "dependsOn": ["^rimraf"] },
+		"dev": { "cache": true },
+		"format": { "dependsOn": ["^format"] }
+	}
+}
