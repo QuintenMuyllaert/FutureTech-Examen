@@ -29,5 +29,8 @@
 		"prettier-plugin-svelte": "^2.9.0",
 		"turbo": "^1.6.3"
 	},
-	"packageManager": "npm@8.19.2"
+	"packageManager": "npm@8.19.2",
+	"volta": {
+		"node": "19.0.1"
+	}
 }
