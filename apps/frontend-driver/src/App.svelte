@@ -2,9 +2,9 @@
 	import { Router, Link, Route } from "svelte-routing";
 	import Home from "./routes/home.svelte";
 	import Tracking from "./routes/tracking.svelte";
+	import NotFound from "./routes/404.svelte";
 
 	export let url = "";
-
 </script>
 
 <Router {url}>
@@ -15,7 +15,7 @@
 		<div class="h-full flex justify-center items-center bg-neutral-100">
 			<Route path="tracking/:id" component={Tracking} />
 			<Route path="/"><Home /></Route>
-			<Route path="*"><h1>404</h1></Route>
+			<Route path="*" component={NotFound} />
 		</div>
 	</main>
 </Router>

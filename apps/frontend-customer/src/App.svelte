@@ -4,6 +4,7 @@
 	import Tracking from "./routes/tracking.svelte";
 	import Overview from "./routes/overview.svelte";
 	import Add from "./routes/add.svelte";
+	import NotFound from "./routes/404.svelte";
 
 	export let url = "";
 </script>
@@ -16,9 +17,10 @@
 		</nav>
 		<div class="h-full flex justify-center items-center bg-neutral-100">
 			<Route path="overview" component={Overview} />
+			<Route path="tracking/:id" component={Tracking} />
 			<Route path="add" component={Add} />
 			<Route path="/"><Home /></Route>
-			<Route path="*"><h1>404</h1></Route>
+			<Route path="*" component={NotFound} />
 		</div>
 	</main>
 </Router>
