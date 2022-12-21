@@ -25,6 +25,7 @@
 		lat: 10,
 		status: "Delivered",
 	};
+
 	let name, address, postalCode, city, orderedOn, weight, height, long, lat, status;
 	$: if (pkg) {
 		name = pkg.name;
@@ -41,6 +42,22 @@
 
 	onMount(async () => {
 		console.log(pkg);
+		//get package data from query string
+		const urlParams = new URLSearchParams(window.location.search);
+		pkg.name = urlParams.get("name");
+		pkg.address = urlParams.get("address");
+		pkg.postalCode = urlParams.get("postalCode");
+		pkg.city = urlParams.get("city");
+		pkg.orderedOn = new Date(urlParams.get("orderedOn"));
+		pkg.weight = parseInt(urlParams.get("weight"));
+		pkg.height = parseInt(urlParams.get("height"));
+		pkg.long = parseInt(urlParams.get("long"));
+		pkg.lat = parseInt(urlParams.get("lat"));
+		pkg.status = urlParams.get("status");
+
+		//example
+		//http://frontend-ocr-test.localhost/?name=John%20Doe&address=123%20Main%20St&postalCode=12345&city=New%20York&orderedOn=2021-01-01&weight=10&height=10&long=10&lat=10&status=Delivered
+		//let uri = `http://frontend-ocr-test.localhost/?name=${pkg.name}&address=${pkg.address}&postalCode=${pkg.postalCode}&city=${pkg.city}&orderedOn=${pkg.orderedOn}&weight=${pkg.weight}&height=${pkg.height}&long=${pkg.long}&lat=${pkg.lat}&status=${pkg.status}`;
 	});
 </script>
 
