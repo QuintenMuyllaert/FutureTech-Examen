@@ -1,4 +1,11 @@
 <script lang="ts">
+	import { onMount } from "svelte";
+
+	const getPackages = async () => {
+		const res = await fetch("http://backend-driver.localhost/packages");
+		return await res.json();
+	};
+
 	let currentStep = 1;
 	let stepName = "Validatie";
 	let deliveryDate = new Date();
@@ -19,6 +26,11 @@
 				break;
 		}
 	};
+
+	onMount(async () => {
+		const packages = await getPackages();
+		console.log(packages);
+	});
 </script>
 
 <main class="min-h-screen flex justify-center items-center bg-neutral-100">
