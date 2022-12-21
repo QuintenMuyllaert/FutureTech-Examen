@@ -61,7 +61,7 @@
 		reader.onload = async (event) => {
 			const data = event.target.result;
 			//console.log(data);
-			const res = await fetch(`http://${document.location.hostname}/api/ocr`, {
+			const res = await fetch(`http://backend-ocr.tobybostoen.be/ocr`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
