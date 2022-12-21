@@ -33,9 +33,11 @@
 	};
 	socket.on("statusUpdate", (msg) => {
 		currentStep = msg.status;
-		packageCurrent = msg;
+		packageCurrent.status = msg.status;
 		console.log(packageCurrent);
 	});
+
+	$: packageCurrent ? console.log(packageCurrent) : console.log("no package");
 
 	onMount(async () => {
 		const res = await getPackage();
@@ -83,13 +85,16 @@
 					<p>We hebben je pakje in ons magazijn ontvangen! We zullen je pakje zo snel mogelijk verwerken en leveren!</p>
 				{/if}
 				{#if currentStep === "Verzonden"}
-					<Map
-						accessToken="pk.eyJ1IjoiYWVyZXR5IiwiYSI6ImNsOHZweTF2eDBnaHUzd29ndHExZHJzOXcifQ.IuExbN0AdEz1VCEDUVDn1w"
-						bind:this={mapComponent}
-						on:ready={onMapReady}>
-						<Marker lat={Kortrijk.lat} lng={Kortrijk.lng} color="rgb(239,68,68)" label="Kortrijk" popupClassName="class-name" />
-						<Marker lat={packageCurrent.lat} lng={packageCurrent.long} color="rgb(18, 40, 224)" label="Deliverer" popupClassName="class-name" />
-					</Map>
+					{#if packageCurrent != undefined && packageCurrent != null && packageCurrent.long != undefined && packageCurrent.long != null}
+						<Map
+							accessToken="pk.eyJ1IjoiYWVyZXR5IiwiYSI6ImNsOHZweTF2eDBnaHUzd29ndHExZHJzOXcifQ.IuExbN0AdEz1VCEDUVDn1w"
+							bind:this={mapComponent}
+							on:ready={onMapReady}>
+							<Marker lat={Kortrijk.lat} lng={Kortrijk.lng} color="rgb(239,68,68)" label="Kortrijk" popupClassName="class-name" />
+							<Marker lat={packageCurrent.lat} lng={packageCurrent.long} color="rgb(18, 40, 224)" label="Deliverer" popupClassName="class-name" />
+							{console.log(packageCurrent.lat, packageCurrent.long, packageCurrent)}
+						</Map>
+					{/if}
 				{/if}
 				{#if currentStep === "Geleverd"}
 					<p>Je pakje is geleverd!</p>
