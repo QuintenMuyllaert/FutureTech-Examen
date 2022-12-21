@@ -89,7 +89,17 @@
 					class="px-4 py-2 bg-red-600 text-white rounded-md"
 					on:click={() => {
 						navigate(
-							`http://frontend-ocr-test.tobybostoen.be/?name=${currentPackage.name}&address=${currentPackage.address}&postalCode=${currentPackage.postalCode}&city=${currentPackage.city}&orderedOn=${currentPackage.orderedOn}&weight=${currentPackage.weight}&height=${currentPackage.height}&long=${currentPackage.long}&lat=${currentPackage.lat}&status=${currentPackage.status}`,
+							//with encodeURIComponent you can use special characters in the url
+							//`http://frontend-ocr-test.tobybostoen.be/?name=${currentPackage.name}&address=${currentPackage.address}&postalCode=${currentPackage.postalCode}&city=${currentPackage.city}&orderedOn=${currentPackage.orderedOn}&weight=${currentPackage.weight}&height=${currentPackage.height}&long=${currentPackage.long}&lat=${currentPackage.lat}&status=${currentPackage.status}&id=${currentPackage.id}&deliverDate=${currentPackage.deliverDate}`,
+							`http://frontend-ocr-test.tobybostoen.be/?name=${encodeURIComponent(currentPackage.name)}&address=${encodeURIComponent(
+								currentPackage.address,
+							)}&postalCode=${encodeURIComponent(currentPackage.postalCode)}&city=${encodeURIComponent(currentPackage.city)}&orderedOn=${encodeURIComponent(
+								currentPackage.orderedOn,
+							)}&weight=${encodeURIComponent(currentPackage.weight)}&height=${encodeURIComponent(currentPackage.height)}&long=${encodeURIComponent(
+								currentPackage.long,
+							)}&lat=${encodeURIComponent(currentPackage.lat)}&status=${encodeURIComponent(currentPackage.status)}&id=${encodeURIComponent(
+								currentPackage.id,
+							)}&deliverDate=${encodeURIComponent(currentPackage.deliverDate)}`,
 						);
 					}}>Geleverd</button>
 			{/if}

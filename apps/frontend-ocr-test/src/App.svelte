@@ -5,11 +5,16 @@
 	let ctx: CanvasRenderingContext2D;
 
 	let htmlNameInput: HTMLInputElement;
+	let pkgId: string;
 
 	onMount(() => {
 		ctx = htmlCanvas.getContext("2d");
 		ctx.strokeStyle = "#000000";
 		ctx.lineWidth = 1;
+
+		//get package id from querystring
+		const urlParams = new URLSearchParams(window.location.search);
+		pkgId = urlParams.get("id");
 
 		//allow user to sign their signature on the canvas
 		const draw = (e: MouseEvent | TouchEvent) => {
@@ -96,7 +101,7 @@
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ image: dataURL, id: uid }),
+			body: JSON.stringify({ image: dataURL, id: uid, packageId: pkgId }),
 		});
 
 		//go to home
