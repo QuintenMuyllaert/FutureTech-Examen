@@ -1,0 +1,27 @@
+{
+    "name": "futuretech-examen",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "turbo run build",
+        "dev": "turbo run dev --parallel",
+        "lint": "turbo run lint",
+        "start": "turbo run start",
+        "format": "turbo run format"
+    },
+    "keywords": [],
+    "author": "Quinten Muyllaert",
+    "license": "UNLICENSED",
+    "private": true,
+    "workspaces": [
+        "apps/*"
+    ],
+    "engine": {
+        "node": ">=14.0.0"
+    },
+    "packageManager": "npm@8.19.2",
+    "devDependencies": {
+        "turbo": "^1.6.3"
+    }
+}
