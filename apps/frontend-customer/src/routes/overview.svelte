@@ -30,14 +30,14 @@
 	<h1 class="font-bold text-2xl">Home</h1>
 	<div class="mobile grid max-h-[65vh] overflow-y-auto">
 		<div class="grid cols sticky top-0 z-10 py-2 bg-white">
-			{#if !mobile()}
+			{#if !mobile}
 				<h2 class="font-bold">id</h2>
 			{/if}
 			<h2 class="font-bold">naam</h2>
 			<h2 class="font-bold">adres</h2>
 			<h2 class="font-bold">postcode</h2>
 			<h2 class="font-bold">stad</h2>
-			{#if !mobile()}
+			{#if !mobile}
 				<h2 class="font-bold">besteldatum</h2>
 				<h2 class="font-bold">gewicht</h2>
 				<h2 class="font-bold">hoogte</h2>
@@ -48,14 +48,14 @@
 			{#each $packages as p}
 				<Link to="/tracking/{p.id}" class="grid ">
 					<div class="grid cols sticky top-0 z-10 py-2 bg-white">
-						{#if !mobile()}
+						{#if !mobile}
 							<div class="overflow-y-auto py-2 border-t-2">{p.id}</div>
 						{/if}
 						<div class="overflow-y-auto py-2 border-t-2">{p.name}</div>
 						<div class="overflow-y-auto py-2 border-t-2">{p.address}</div>
 						<div class="overflow-y-auto py-2 border-t-2">{p.postalCode}</div>
 						<div class="overflow-x-auto py-2 border-t-2">{p.city}</div>
-						{#if !mobile()}
+						{#if !mobile}
 							<div class="overflow-x-auto py-2 border-t-2">{p.orderedOn}</div>
 							<div class="overflow-x-auto py-2 border-t-2">{p.weight}</div>
 							<div class="overflow-x-auto py-2 border-t-2">{p.height}</div>
