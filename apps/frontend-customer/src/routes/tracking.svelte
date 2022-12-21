@@ -3,7 +3,7 @@
 	import io from "socket.io-client";
 	import { onMount } from "svelte";
 
-	export let id
+	export let id;
 
 	const socket = io("ws://backend-driver.tobybostoen.be");
 
@@ -40,29 +40,30 @@
 	onMount(async () => {
 		const res = await getPackage();
 		packageCurrent = res;
-		currentStep = res.status
-		console.log(packageCurrent)
+		currentStep = res.status;
+		console.log(packageCurrent);
 	});
 </script>
 
 <div>
-	<div class="shadow rounded-md p-8 grid grid-rows-[auto_auto_1fr] gap-4 bg-white min-h-[50vh]">
+	<div class="shadow rounded-md p-8 grid grid-rows-[auto_auto_1fr] gap-4 bg-white min-h-[50vh] w-[90vw] md:w-[40vw]">
 		<h1 class="text-4xl text-red font-bold">K-post</h1>
 		<nav>
-			<ul class="flex gap-4">
+			<ul class="grid grid-cols-4 gap-4 w-full">
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="bg-red-500 rounded-full w-24 h-4" />
+				<li class="bg-red-500 rounded-full h-4" />
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="{currentStep == "Sortering" || currentStep == "Geleverd" || currentStep == "Verzonden" ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" />
+				<li
+					class="{currentStep == 'Sortering' || currentStep == 'Geleverd' || currentStep == 'Verzonden' ? 'bg-red-500' : 'bg-neutral-200'} rounded-full h-4" />
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="{currentStep == "Verzonden" || currentStep == "Geleverd" ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" />
+				<li class="{currentStep == 'Verzonden' || currentStep == 'Geleverd' ? 'bg-red-500' : 'bg-neutral-200'} rounded-full h-4" />
 				<!-- svelte-ignore a11y-click-events-have-key-events -->
-				<li class="{currentStep == "Geleverd" ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" />
+				<li class="{currentStep == 'Geleverd' ? 'bg-red-500' : 'bg-neutral-200'} rounded-full h-4" />
 			</ul>
 		</nav>
 		<div class="w-full">
 			<h2 class="text-xl font-bold">{stepName}</h2>
-			<div class="flex gap-8">
+			<div class="flex flex-col md:flex-row gap-8">
 				<div>
 					<h3 class="font-bold">Verwachte leveringsdatum</h3>
 					{#if packageCurrent}
@@ -74,7 +75,7 @@
 					<p>{estimetedDeliveryTime}</p>
 				</div>
 			</div>
-			<div class="w-[28rem] max-w-lg mt-4 h-48 overflow-y-auto">
+			<div class="max-w-lg mt-4 h-48 overflow-y-auto">
 				{#if currentStep === "Validatie"}
 					<p>Je pakje is bij ons aangemeld en zal zo snel mogelijk verwerkt worden wanneer we deze ontvangen!</p>
 				{/if}
