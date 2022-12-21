@@ -95,7 +95,7 @@
 		//link.click();
 
 		//send to backend
-		const uid = htmlNameInput.value + " - " + Date.now();
+		const uid = htmlNameInput.value;
 		await fetch(`http://backend-driver.tobybostoen.be/idcard`, {
 			method: "POST",
 			headers: {
