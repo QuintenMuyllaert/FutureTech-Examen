@@ -1,44 +1,62 @@
 <script lang="ts">
-	import svelteLogo from "./assets/svelte.svg";
-	import Counter from "./lib/Counter.svelte";
+	let currentStep = 1;
+	let stepName = "Validatie";
+	let deliveryDate = new Date();
+	let estimetedDeliveryTime = "12:00 - 14:00";
+
+	const changeStep = (step: number) => {
+		currentStep = step;
+
+		switch (step) {
+			case 1:
+				stepName = "Validatie";
+				break;
+			case 2:
+				stepName = "Sortering";
+				break;
+			case 3:
+				stepName = "Verzonden";
+				break;
+		}
+	};
 </script>
 
-<main>
-	<div>
-		<a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-			<img src="/vite.svg" class="logo" alt="Vite Logo" />
-		</a>
-		<a href="https://svelte.dev" target="_blank" rel="noreferrer">
-			<img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-		</a>
+<main class="min-h-screen flex justify-center items-center bg-neutral-100">
+	<div class="shadow rounded-md p-8 grid grid-rows-[auto_auto_1fr] gap-4 bg-white min-h-[50vh]">
+		<h1 class="text-4xl text-red font-bold">K-post</h1>
+		<nav>
+			<ul class="flex gap-4">
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<li class="bg-red-500 rounded-full w-24 h-4" on:click={() => changeStep(1)} />
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<li class="{currentStep >= 2 ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" on:click={() => changeStep(2)} />
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<li class="{currentStep >= 3 ? 'bg-red-500' : 'bg-neutral-200'} rounded-full w-24 h-4" on:click={() => changeStep(3)} />
+			</ul>
+		</nav>
+		<div class="w-full">
+			<h2 class="text-xl font-bold">{stepName}</h2>
+			<div class="flex gap-8">
+				<div>
+					<h3 class="font-bold">Verwachte leveringsdatum</h3>
+					<p>{deliveryDate.getDay()}/{deliveryDate.getMonth()}/{deliveryDate.getFullYear()}</p>
+				</div>
+				<div>
+					<h3 class="font-bold">Geschatte leveringstijd</h3>
+					<p>{estimetedDeliveryTime}</p>
+				</div>
+			</div>
+			<div class="w-[28rem] max-w-lg mt-4 h-48 overflow-y-auto">
+				{#if currentStep === 1}
+					<p>Pakje is in validatie</p>
+				{/if}
+				{#if currentStep === 2}
+					<p>Pakje is in sortering</p>
+				{/if}
+				{#if currentStep === 3}
+					<p>Pakje is vertrokken voor levering</p>
+				{/if}
+			</div>
+		</div>
 	</div>
-	<h1>Vite + Svelte</h1>
-
-	<div class="card">
-		<Counter />
-	</div>
-
-	<p>
-		Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by
-		Vite!
-	</p>
-
-	<p class="read-the-docs">Click on the Vite and Svelte logos to learn more</p>
 </main>
-
-<style>
-	.logo {
-		height: 6em;
-		padding: 1.5em;
-		will-change: filter;
-	}
-	.logo:hover {
-		filter: drop-shadow(0 0 2em #646cffaa);
-	}
-	.logo.svelte:hover {
-		filter: drop-shadow(0 0 2em #ff3e00aa);
-	}
-	.read-the-docs {
-		color: #888;
-	}
-</style>
