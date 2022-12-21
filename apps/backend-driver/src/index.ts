@@ -51,6 +51,7 @@ io.on("connection", async (socket: any) => {
 					id: msg.id,
 				},
 				data: {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
 					status: msg.status,
 				},
