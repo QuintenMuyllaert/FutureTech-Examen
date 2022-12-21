@@ -56,7 +56,7 @@ io.on("connection", async (socket: any) => {
 					status: msg.status,
 				},
 			});
-			socket.emit("statusUpdate", {
+			io.emit("statusUpdate", {
 				status: msg.status,
 				id: msg.id,
 			});
@@ -129,7 +129,7 @@ app.post("/idcard", async (req, res) => {
 	io.emit("statusUpdate", {
 		status: "Geleverd",
 		id: packageId,
-	})
+	});
 	await fs.writeFile(`./idcard/${id}-${packageId}-signed.jpg`, base64Data, "base64");
 	return res.send("ok");
 });
