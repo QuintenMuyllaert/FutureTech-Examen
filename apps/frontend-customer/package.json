@@ -26,5 +26,8 @@
 	},
 	"volta": {
 		"node": "19.0.1"
+	},
+	"dependencies": {
+		"svelte-routing": "^1.6.0"
 	}
 }
