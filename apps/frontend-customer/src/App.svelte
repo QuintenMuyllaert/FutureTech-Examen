@@ -12,6 +12,7 @@
 <Router {url}>
 	<main class="grid grid-rows-[auto_1fr] min-h-screen">
 		<nav class="bg-red-600 p-4 text-white flex gap-8">
+			<img src="/kpostlogo.png" alt="logo" />
 			<Link to="/">Home</Link>
 			<Link to="overview">Overzicht</Link>
 		</nav>
@@ -24,3 +25,14 @@
 		</div>
 	</main>
 </Router>
+
+<style>
+	img {
+		height: 3rem;
+		background-color: white;
+		border-radius: 0.5rem;
+	}
+	nav {
+		align-items: center;
+	}
+</style>
