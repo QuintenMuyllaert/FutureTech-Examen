@@ -16,6 +16,7 @@
 			<Link to="overview">Overzicht</Link>
 		</nav>
 		<div class="h-full flex justify-center items-center bg-neutral-100">
+			<Route path="tracking/:id" component={Tracking} />
 			<Route path="overview" component={Overview} />
 			<Route path="tracking/:id" component={Tracking} />
 			<Route path="add" component={Add} />
