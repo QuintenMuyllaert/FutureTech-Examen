@@ -10,12 +10,11 @@
 	<main class="grid grid-rows-[auto_1fr] min-h-screen">
 		<nav class="bg-red-600 p-4 text-white flex gap-8">
 			<Link to="/">Home</Link>
-			<Link to="tracking">Tracking</Link>
 		</nav>
 		<div class="h-full flex justify-center items-center bg-neutral-100">
-			<!-- <Route path="blog/:id" component={BlogPost} /> -->
-			<Route path="tracking" component={Tracking} />
+			<Route path="tracking/:id" component={Tracking} />
 			<Route path="/"><Home /></Route>
+			<Route path="*"><h1>404</h1></Route>
 		</div>
 	</main>
 </Router>
