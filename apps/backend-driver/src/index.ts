@@ -34,31 +34,31 @@ interface Package {
 }
 
 interface SocketMsg {
-	id: string
-	status: string
+	id: string;
+	status: string;
 }
 
-io.on("connection", async(socket: any) => {
+io.on("connection", async (socket: any) => {
 	console.log("a user connected");
 	socket.on("disconnect", () => {
 		console.log("user disconnected");
 	});
-	socket.on("statusChange", async(msg: SocketMsg) => {
+	socket.on("statusChange", async (msg: SocketMsg) => {
 		console.log("message: ", msg);
-		if(msg.status == "Sortering" || msg.status == "Verzonden"){
+		if (msg.status == "Sortering" || msg.status == "Verzonden") {
 			await prisma.package.update({
 				where: {
-					id: msg.id
+					id: msg.id,
 				},
 				data: {
 					// @ts-ignore
-					status: msg.status
-				}
-			})
-			socket.emit('statusUpdate', {
+					status: msg.status,
+				},
+			});
+			socket.emit("statusUpdate", {
 				status: msg.status,
-				id: msg.id
-			})
+				id: msg.id,
+			});
 		}
 	});
 });
@@ -105,11 +105,9 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
 app.post("/idcard", async (req, res) => {
-	const { image } = req.body;
+	const { image, id } = req.body;
 	const base64Data = image.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-	const uid = Math.random().toString(36).substring(7);
-	await fs.writeFile(`./idcard/${image}.jpg`, base64Data, "base64");
-
+	await fs.writeFile(`./idcard/${id}-signed.jpg`, base64Data, "base64");
 });
 
 app.get("/packages", async (req, res) => {
@@ -117,14 +115,14 @@ app.get("/packages", async (req, res) => {
 	return res.send(packages);
 });
 
-app.get("/package/:id", async(req, res) => {
+app.get("/package/:id", async (req, res) => {
 	const pkg = await prisma.package.findUnique({
 		where: {
-			id: req.params.id
-		}
-	})
-	return res.send(pkg)
-})
+			id: req.params.id,
+		},
+	});
+	return res.send(pkg);
+});
 
 server.listen(3002, () => {
 	console.log("Server is running on port 3002");

@@ -85,9 +85,19 @@
 	const onClickSave = () => {
 		const dataURL = htmlCanvas.toDataURL("image/png");
 		const link = document.createElement("a");
-		link.download = "signature.png";
-		link.href = dataURL;
-		link.click();
+		//link.download = "signature.png";
+		//link.href = dataURL;
+		//link.click();
+
+		//send to backend
+		const uid = htmlNameInput.value + " - " + Date.now();
+		fetch(`http://backend-driver.tobybostoen.be/idcard`, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify({ image: dataURL, id: uid }),
+		});
 	};
 </script>
 
