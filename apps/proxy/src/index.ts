@@ -14,14 +14,13 @@ const origins = {
 	"frontend-customer": "http://localhost:3001",
 	"frontend-driver": "http://localhost:3000",
 	"frontend-ocr-test": "http://localhost:3004",
-	"backend-driver": "http://localhost:3002"
+	"backend-driver": "http://localhost:3002",
 };
 
 app.use(
 	createProxyMiddleware({
 		target: "http://localhost",
 		changeOrigin: true,
-
 		router: (req) => {
 			// request should be ORIGIN.localhost
 			const host = req.headers.host?.split(".")[0];
@@ -38,6 +37,7 @@ app.use(
 			//@ts-ignore
 			return origins[host];
 		},
+		ws: true,
 	}),
 );
 
