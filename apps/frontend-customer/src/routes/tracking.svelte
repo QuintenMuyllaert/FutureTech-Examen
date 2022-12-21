@@ -67,7 +67,7 @@
 				<div>
 					<h3 class="font-bold">Verwachte leveringsdatum</h3>
 					{#if packageCurrent}
-						<p>{packageCurrent.deliveryDate}</p>
+						<p>{packageCurrent.deliverDate}</p>
 					{/if}
 				</div>
 				<div>
@@ -88,7 +88,7 @@
 						bind:this={mapComponent}
 						on:ready={onMapReady}>
 						<Marker lat={Kortrijk.lat} lng={Kortrijk.lng} color="rgb(239,68,68)" label="Kortrijk" popupClassName="class-name" />
-						<Marker lat={Kortrijk.lat} lng={3} color="rgb(18, 40, 224)" label="Deliverer" popupClassName="class-name" />
+						<Marker lat={packageCurrent.lat} lng={packageCurrent.long} color="rgb(18, 40, 224)" label="Deliverer" popupClassName="class-name" />
 					</Map>
 				{/if}
 				{#if currentStep === "Geleverd"}
