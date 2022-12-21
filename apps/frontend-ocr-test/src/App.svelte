@@ -61,7 +61,8 @@
 		reader.onload = async (event) => {
 			const data = event.target.result;
 			//console.log(data);
-			const res = await fetch("http://localhost:3003/ocr", {
+			const host = `http://backend-ocr.${window.location.hostname.split(".").slice(1).join(".")}`;
+			const res = await fetch(`${host}/ocr`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
