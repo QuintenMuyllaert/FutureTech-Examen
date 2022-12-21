@@ -1,4 +1,12 @@
 <script lang="ts">
+	import { Map, Marker } from "@beyonk/svelte-mapbox";
+	let mapComponent: Map;
+
+	const Kortrijk = {
+		lat: 50.82803,
+		lng: 3.26487,
+	};
+
 	let currentStep = 1;
 	let stepName = "Ontvangen";
 	let deliveryDate = new Date();
@@ -21,6 +29,12 @@
 				stepName = "Geleverd";
 				break;
 		}
+	};
+
+	const onMapReady = (m) => {
+		console.log(m);
+		// console.log(Kortrijk.lat, Kortrijk.lng);
+		mapComponent.flyTo({ center: [Kortrijk.lng, Kortrijk.lat] });
 	};
 </script>
 
@@ -59,10 +73,17 @@
 					<p>We hebben je pakje in ons magazijn ontvangen! We zullen je pakje zo snel mogelijk verwerken en leveren!</p>
 				{/if}
 				{#if currentStep === 3}
-					<div class="grid grid-cols-2 gap-2 h-full">
+					<Map
+						accessToken="pk.eyJ1IjoiYWVyZXR5IiwiYSI6ImNsOHZweTF2eDBnaHUzd29ndHExZHJzOXcifQ.IuExbN0AdEz1VCEDUVDn1w"
+						bind:this={mapComponent}
+						on:ready={onMapReady}>
+						<Marker lat={Kortrijk.lat} lng={Kortrijk.lng} color="rgb(239,68,68)" label="Kortrijk" popupClassName="class-name" />
+						<Marker lat={Kortrijk.lat} lng={3} color="rgb(18, 40, 224)" label="Deliverer" popupClassName="class-name" />
+					</Map>
+					<!-- <div class="grid grid-cols-2 gap-2 h-full">
 						<p>Je pakje is onderweg!</p>
-						<div class="h-full w-full bg-red-300" />
-					</div>
+
+					</div> -->
 				{/if}
 				{#if currentStep === 4}
 					<p>Je pakje is geleverd!</p>
