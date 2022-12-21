@@ -32,17 +32,19 @@
 			<h2 class="font-bold">height</h2>
 		</div>
 
-		{#each $packages as p}
-			<Link to="/tracking/{p.id}" class="grid grid-cols-8">
-				<div class="overflow-y-auto py-2 border-t-2">{p.id}</div>
-				<div class="overflow-y-auto py-2 border-t-2">{p.name}</div>
-				<div class="overflow-y-auto py-2 border-t-2">{p.address}</div>
-				<div class="overflow-y-auto py-2 border-t-2">{p.postalCode}</div>
-				<div class="overflow-x-auto py-2 border-t-2">{p.city}</div>
-				<div class="overflow-x-auto py-2 border-t-2">{p.orderedOn}</div>
-				<div class="overflow-x-auto py-2 border-t-2">{p.weight}</div>
-				<div class="overflow-x-auto py-2 border-t-2">{p.height}</div>
-			</Link>
-		{/each}
+		{#if $packages != null || $packages != undefined}
+			{#each $packages as p}
+				<Link to="/tracking/{p.id}" class="grid grid-cols-8">
+					<div class="overflow-y-auto py-2 border-t-2">{p.id}</div>
+					<div class="overflow-y-auto py-2 border-t-2">{p.name}</div>
+					<div class="overflow-y-auto py-2 border-t-2">{p.address}</div>
+					<div class="overflow-y-auto py-2 border-t-2">{p.postalCode}</div>
+					<div class="overflow-x-auto py-2 border-t-2">{p.city}</div>
+					<div class="overflow-x-auto py-2 border-t-2">{p.orderedOn}</div>
+					<div class="overflow-x-auto py-2 border-t-2">{p.weight}</div>
+					<div class="overflow-x-auto py-2 border-t-2">{p.height}</div>
+				</Link>
+			{/each}
+		{/if}
 	</div>
 </div>
