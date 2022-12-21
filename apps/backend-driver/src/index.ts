@@ -68,8 +68,12 @@ app.post("/package", async (req, res) => {
 	console.log(req.body);
 	const pkg = req.body as unknown;
 	if (pkg) {
-		const { name, address, postalCode, city, orderedOn, weight, width, depth, height, long, lat } = pkg as Package;
-		if (!name || !address || !postalCode || !city || !orderedOn || !weight || !width || !depth || !height || !long || !lat) {
+		const { name, address, postalCode, city, weight, width, depth, height, long, lat } = pkg as Package;
+		const orderedOn = new Date();
+		//check if all fields are filled ( not null or undefined)
+		if (!name || !address || !postalCode || !city || !weight || !width || !depth || !height || !long || !lat) {
+			console.log("Invalid package");
+			console.log("Caused by", name, address, postalCode, city, weight, width, depth, height, long, lat);
 			res.status(400).send("Invalid package");
 			return;
 		}

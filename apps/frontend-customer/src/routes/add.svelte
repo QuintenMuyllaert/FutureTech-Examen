@@ -4,18 +4,26 @@
 		address: "",
 		postalCode: "",
 		city: "",
-		height: 0,
-		weight: 0,
-		depth: 0,
-		width: 0,
+		height: 1,
+		weight: 1,
+		depth: 1,
+		width: 10,
 		long: 50,
 		lat: 3,
 		orderedOn: new Date(),
 		status: "validatie",
 	};
 
-	const handleSubmit = () => {
+	const handleSubmit = async() => {
 		console.log(pkg);
+		// post request with fetch
+		const response = await fetch("http://backend-driver.tobybostoen.be/package", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			body: JSON.stringify(pkg),
+		});
 	};
 </script>
 
