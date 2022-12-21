@@ -21,4 +21,5 @@ model Package {
   height  Int
   long Float
   lat Float
+  status String @default("validation")
 }

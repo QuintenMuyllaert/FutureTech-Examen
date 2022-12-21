@@ -1,11 +1,16 @@
 import express, { json } from "express";
-import { Db, MongoClient } from "mongodb";
 import { config } from "dotenv";
 import { PrismaClient } from "@prisma/client";
-
-config();
+import { Server } from "socket.io";
+import http from "http";
 
 const app = express();
+
+const server = http.createServer(app);
+
+const io = new Server(server);
+
+config();
 
 app.use(json());
 
@@ -21,7 +26,34 @@ interface Package {
 	height: number;
 	long: number;
 	lat: number;
+	status: string;
 }
+
+interface SocketMsg {
+	id: string
+	status: string
+}
+
+io.on("connection", async(socket) => {
+	console.log("a user connected");
+	socket.on("disconnect", () => {
+		console.log("user disconnected");
+	});
+	socket.on("statusChange", async(msg: SocketMsg) => {
+		console.log("message: ", msg);
+		if(msg.status == "sorting" || msg.status == "delivered"){
+			await prisma.package.update({
+				where: {
+					id: msg.id
+				},
+				data: {
+					// @ts-ignore
+					status: msg.status
+				}
+			})
+		}
+	});
+});
 
 app.post("/package", async (req, res) => {
 	console.log(req.body);
@@ -53,9 +85,9 @@ app.post("/package", async (req, res) => {
 	}
 });
 
-app.get("/packages", async(req, res) => {
-	const packages = await prisma.package.findMany()
-	return res.send(packages)
+app.get("/packages", async (req, res) => {
+	const packages = await prisma.package.findMany();
+	return res.send(packages);
 });
 
 app.listen(3002, () => {
