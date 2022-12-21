@@ -37,7 +37,7 @@ app.post("/package", async (req, res) => {
 			return;
 		}
 
-		await prisma.package.create({
+		const packageMade = await prisma.package.create({
 			data: {
 				name,
 				address,
@@ -51,15 +51,16 @@ app.post("/package", async (req, res) => {
 			},
 		});
 
-		const packages = await prisma.package.findMany();
-
-		return res.send(packages);
+		return res.send(`Package has been added with id ${packageMade.id}`);
 	} else {
 		return res.status(400).send("Invalid package");
 	}
 });
 
-app.get("/packages");
+app.get("/packages", async(req, res) => {
+	const packages = await prisma.package.findMany()
+	return res.send(packages)
+});
 
 app.listen(3002, () => {
 	console.log("Server is running on port 3002");
