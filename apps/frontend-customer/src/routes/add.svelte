@@ -36,7 +36,7 @@
 		<div class="flex gap-4">
 			<div class="flex flex-col">
 				<label for="postal" class="font-bold">Postcode</label>
-				<input type="text" id="postal" class="border py-1 px-2 rounded" bind:value={pkg.postalCode} />
+				<input type="zip" id="postal" class="border py-1 px-2 rounded" bind:value={pkg.postalCode} />
 			</div>
 			<div class="flex flex-col">
 				<label for="city" class="font-bold">Stad</label>
