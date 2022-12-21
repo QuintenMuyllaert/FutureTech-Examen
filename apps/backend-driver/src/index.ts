@@ -51,6 +51,7 @@ io.on("connection", async (socket: any) => {
 					id: msg.id,
 				},
 				data: {
+					// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 					// @ts-ignore
 					status: msg.status,
 				},
@@ -105,9 +106,13 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
 app.post("/idcard", async (req, res) => {
-	const { image, id } = req.body;
+	const { image, id, packageId } = req.body;
+	if (!image || !id || !packageId) {
+		console.log("Invalid idcard", id, packageId);
+		return res.status(400).send("Invalid idcard");
+	}
+
 	const base64Data = image.replace(/^data:([A-Za-z-+/]+);base64,/, "");
-	await fs.writeFile(`./idcard/${id}-signed.jpg`, base64Data, "base64");
 	await prisma.package.update({
 		where: {
 			id: id,
@@ -117,6 +122,7 @@ app.post("/idcard", async (req, res) => {
 			status: "Geleverd",
 		},
 	});
+	await fs.writeFile(`./idcard/${id}-${packageId}-signed.jpg`, base64Data, "base64");
 	return res.send("ok");
 });
 

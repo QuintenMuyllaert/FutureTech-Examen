@@ -5,11 +5,16 @@
 	let ctx: CanvasRenderingContext2D;
 
 	let htmlNameInput: HTMLInputElement;
+	let pkgId: string;
 
 	onMount(() => {
 		ctx = htmlCanvas.getContext("2d");
 		ctx.strokeStyle = "#000000";
 		ctx.lineWidth = 1;
+
+		//get package id from querystring
+		const urlParams = new URLSearchParams(window.location.search);
+		pkgId = urlParams.get("id");
 
 		//allow user to sign their signature on the canvas
 		const draw = (e: MouseEvent | TouchEvent) => {
@@ -82,7 +87,7 @@
 		ctx.clearRect(0, 0, htmlCanvas.width, htmlCanvas.height);
 	};
 
-	const onClickSave = () => {
+	const onClickSave = async () => {
 		const dataURL = htmlCanvas.toDataURL("image/png");
 		const link = document.createElement("a");
 		//link.download = "signature.png";
@@ -90,14 +95,17 @@
 		//link.click();
 
 		//send to backend
-		const uid = htmlNameInput.value + " - " + Date.now();
-		fetch(`http://backend-driver.tobybostoen.be/idcard`, {
+		const uid = htmlNameInput.value;
+		await fetch(`http://backend-driver.tobybostoen.be/idcard`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ image: dataURL, id: uid }),
+			body: JSON.stringify({ image: dataURL, id: uid, packageId: pkgId }),
 		});
+
+		//go to home
+		document.location.href = "http://frontend-driver.tobybostoen.be/";
 	};
 </script>
 
