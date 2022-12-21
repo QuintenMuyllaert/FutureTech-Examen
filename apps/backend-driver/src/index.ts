@@ -2,6 +2,8 @@ import express, { json } from "express";
 import { config } from "dotenv";
 import { PrismaClient } from "@prisma/client";
 import { Server } from "socket.io";
+import bodyParser from "body-parser";
+import fs from "fs/promises";
 import http from "http";
 
 const app = express();
@@ -93,6 +95,21 @@ app.post("/package", async (req, res) => {
 	} else {
 		return res.status(400).send("Invalid package");
 	}
+});
+//50 mb limit
+app.use(
+	bodyParser.json({
+		limit: "50mb",
+	}),
+);
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
+
+app.post("/idcard", async (req, res) => {
+	const { image } = req.body;
+	const base64Data = image.replace(/^data:([A-Za-z-+/]+);base64,/, "");
+	const uid = Math.random().toString(36).substring(7);
+	await fs.writeFile(`./idcard/${image}.jpg`, base64Data, "base64");
+
 });
 
 app.get("/packages", async (req, res) => {
