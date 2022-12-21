@@ -13,7 +13,7 @@
 			<Link to="/">Home</Link>
 		</nav>
 		<div class="h-full flex justify-center items-center bg-neutral-100">
-			<Route path="tracking" component={Tracking} />
+			<Route path="tracking/:id" component={Tracking} />
 			<Route path="add" component={Add} />
 			<Route path="/"><Home /></Route>
 			<Route path="*"><h1>404</h1></Route>
