@@ -8,27 +8,26 @@
 		"dev": "turbo run dev --parallel",
 		"lint": "turbo run lint",
 		"start": "turbo run start",
-		"format": "turbo run format"
+		"format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,scss,md}\""
 	},
-	"keywords": [],
-	"author": "Quinten Muyllaert",
-	"license": "ISC",
 	"workspaces": [
 		"apps/*"
 	],
-	"engine": {
-		"node": ">=14.0.0"
-	},
 	"repository": {
 		"type": "git",
 		"url": "git+https://github.com/QuintenMuyllaert/FutureTech-Examen.git"
 	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
 	"bugs": {
 		"url": "https://github.com/QuintenMuyllaert/FutureTech-Examen/issues"
 	},
 	"homepage": "https://github.com/QuintenMuyllaert/FutureTech-Examen#readme",
-	"packageManager": "npm@8.19.2",
 	"devDependencies": {
+		"prettier": "^2.8.1",
+		"prettier-plugin-svelte": "^2.9.0",
 		"turbo": "^1.6.3"
-	}
+	},
+	"packageManager": "npm@8.19.2"
 }
