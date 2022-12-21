@@ -25,5 +25,8 @@
 	},
 	"volta": {
 		"node": "19.0.1"
+	},
+	"dependencies": {
+		"socket.io-client": "^4.5.4"
 	}
 }
