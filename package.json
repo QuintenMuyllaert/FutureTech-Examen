@@ -1,27 +1,35 @@
 {
-    "name": "futuretech-examen",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "build": "turbo run build",
-        "dev": "turbo run dev --parallel",
-        "lint": "turbo run lint",
-        "start": "turbo run start",
-        "format": "turbo run format"
-    },
-    "keywords": [],
-    "author": "Quinten Muyllaert",
-    "license": "UNLICENSED",
-    "private": true,
-    "workspaces": [
-        "apps/*"
-    ],
-    "engine": {
-        "node": ">=14.0.0"
-    },
-    "packageManager": "npm@8.19.2",
-    "devDependencies": {
-        "turbo": "^1.6.3"
-    }
+	"name": "futuretech-examen",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"build": "turbo run build",
+		"dev": "turbo run dev --parallel",
+		"lint": "turbo run lint",
+		"start": "turbo run start",
+		"format": "turbo run format"
+	},
+	"keywords": [],
+	"author": "Quinten Muyllaert",
+	"license": "UNLICENSED",
+	"private": true,
+	"workspaces": [
+		"apps/*"
+	],
+	"engine": {
+		"node": ">=14.0.0"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/QuintenMuyllaert/FutureTech-Examen.git"
+	},
+	"bugs": {
+		"url": "https://github.com/QuintenMuyllaert/FutureTech-Examen/issues"
+	},
+	"homepage": "https://github.com/QuintenMuyllaert/FutureTech-Examen#readme",
+	"packageManager": "npm@8.19.2",
+	"devDependencies": {
+		"turbo": "^1.6.3"
+	}
 }
