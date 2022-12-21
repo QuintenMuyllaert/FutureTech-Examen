@@ -6,7 +6,7 @@
 	const packages = writable<any>(null);
 
 	const getPackages = async () => {
-		const res = await fetch("http://backend-driver.localhost/packages");
+		const res = await fetch("http://backend-driver.tobybostoen.be/packages");
 		return await res.json();
 	};
 
